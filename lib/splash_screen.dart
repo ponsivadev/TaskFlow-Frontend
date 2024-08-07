@@ -23,7 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
       Navigator.pushNamedAndRemoveUntil(
         context,
         Pages.home,
-            (route) => false,
+        (route) => false,
       );
     });
   }
@@ -31,14 +31,19 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        backgroundColor: kPrimaryColor,
+        backgroundColor: Color(0xFF00AB44),
         body: Center(
             child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/app_logo.png', width: 100,),
-            const SizedBox(height: 20,),
+            Image.asset(
+              'assets/images/app_logo.png',
+              width: 100,
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             buildText('Everything Tasks', kWhiteColor, textBold,
                 FontWeight.w600, TextAlign.center, TextOverflow.clip),
             const SizedBox(

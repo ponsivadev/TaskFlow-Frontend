@@ -57,7 +57,7 @@ class MyApp extends StatelessWidget {
             fontFamily: 'Sora',
             visualDensity: VisualDensity.adaptivePlatformDensity,
             canvasColor: Colors.transparent,
-            colorScheme: ColorScheme.fromSeed(seedColor: kPrimaryColor),
+            colorScheme: ColorScheme.fromSeed(seedColor: Color(0xFF00AB44)),
             useMaterial3: true,
           ),
         ),

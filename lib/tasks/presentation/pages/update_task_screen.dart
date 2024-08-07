@@ -77,8 +77,8 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                     child: BlocConsumer<TasksBloc, TasksState>(
                         listener: (context, state) {
                       if (state is UpdateTaskFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            getSnackBar(state.error, kRed));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(getSnackBar(state.error, kRed));
                       }
                       if (state is UpdateTaskSuccess) {
                         Navigator.pop(context);
@@ -118,14 +118,14 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                             padding: const EdgeInsets.symmetric(
                                 vertical: 10, horizontal: 20),
                             decoration: BoxDecoration(
-                                color: kPrimaryColor.withOpacity(.1),
+                                color: Color(0xFF00AB44).withOpacity(.1),
                                 borderRadius:
                                     const BorderRadius.all(Radius.circular(5))),
                             child: buildText(
                                 _rangeStart != null && _rangeEnd != null
                                     ? 'Task starting at ${formatDate(dateTime: _rangeStart.toString())} - ${formatDate(dateTime: _rangeEnd.toString())}'
                                     : 'Select a date range',
-                                kPrimaryColor,
+                                Color(0xFF00AB44),
                                 textSmall,
                                 FontWeight.w400,
                                 TextAlign.start,
@@ -177,7 +177,7 @@ class _UpdateTaskScreenState extends State<UpdateTaskScreen> {
                                           Colors.white),
                                   backgroundColor:
                                       MaterialStateProperty.all<Color>(
-                                          kPrimaryColor),
+                                          Color(0xFF00AB44)),
                                   shape: MaterialStateProperty.all<
                                       RoundedRectangleBorder>(
                                     RoundedRectangleBorder(

@@ -63,8 +63,8 @@ class _NewTaskScreenState extends State<NewTaskScreen> {
                     child: BlocConsumer<TasksBloc, TasksState>(
                         listener: (context, state) {
                       if (state is AddTaskFailure) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                            getSnackBar(state.error, kRed));
+                        ScaffoldMessenger.of(context)
+                            .showSnackBar(getSnackBar(state.error, kRed));
                       }
                       if (state is AddTasksSuccess) {
                         Navigator.pop(context);

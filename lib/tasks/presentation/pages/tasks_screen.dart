@@ -41,7 +41,7 @@ class _TasksScreenState extends State<TasksScreen> {
             child: Scaffold(
           backgroundColor: kWhiteColor,
           appBar: CustomAppBar(
-            title: 'Hi',
+            title: 'Welcome Aboard!',
             showBackArrow: false,
             actionWidgets: [
               PopupMenuButton<int>(
@@ -255,7 +255,7 @@ class _TasksScreenState extends State<TasksScreen> {
           floatingActionButton: FloatingActionButton(
               child: const Icon(
                 Icons.add_circle,
-                color: kPrimaryColor,
+                color: Color(0xFF00AB44),
               ),
               onPressed: () {
                 Navigator.pushNamed(context, Pages.createNewTask);

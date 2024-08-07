@@ -10,8 +10,8 @@ class TaskModel {
     required this.id,
     required this.title,
     required this.description,
-    required this.startDateTime,
-    required this.stopDateTime,
+    this.startDateTime,
+    this.stopDateTime,
     this.completed = false,
   });
 
@@ -26,15 +26,18 @@ class TaskModel {
     };
   }
 
-
   factory TaskModel.fromJson(Map<String, dynamic> json) {
     return TaskModel(
-      id: json['id'],
+      id: json['id'] ?? 'default-id', // Handle missing id
       title: json['title'],
       description: json['description'],
       completed: json['completed'],
-      startDateTime: DateTime.parse(json['startDateTime']),
-      stopDateTime: DateTime.parse(json['stopDateTime']),
+      startDateTime: json['startDateTime'] != null
+          ? DateTime.parse(json['startDateTime'])
+          : null,
+      stopDateTime: json['stopDateTime'] != null
+          ? DateTime.parse(json['stopDateTime'])
+          : null,
     );
   }
 

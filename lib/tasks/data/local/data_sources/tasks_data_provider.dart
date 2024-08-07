@@ -19,7 +19,7 @@ class TaskDataProvider {
       const documentId = 'unique()'; // Generates a unique ID for the document
       final response = await _databases.createDocument(
         databaseId: "66b2fb2c002edaef7e7a",
-        collectionId: "66b2fb65001d183448ef",
+        collectionId: "66b34cc7002a051b3cea",
         documentId: documentId,
         data: taskModel.toJson(), // Convert your task model to JSON
       );
@@ -32,11 +32,120 @@ class TaskDataProvider {
   Future<List<TaskModel>> getTasks() async {
     final documentList = await _databases.listDocuments(
       databaseId: "66b2fb2c002edaef7e7a",
-      collectionId: "66b2fb65001d183448ef",
+      collectionId: "66b34cc7002a051b3cea",
     );
-    return documentList.documents
-        .map((d) => TaskModel.fromJson(d.data))
-        .toList();
+
+    try {
+      final List<String>? savedTasks = prefs!.getStringList(Constants.taskKey);
+      List<Map<String, dynamic>> savedData1 = [];
+
+      // Define the list of keys you want to extract
+      const keysToExtract = [
+        'id',
+        'title',
+        'description',
+        'completed',
+        'startDateTime',
+        'stopDateTime'
+      ];
+
+      // Iterate through each document and add the filtered map to `savedData1`
+      documentList.documents!.forEach((document) {
+        Map<String, dynamic> filteredData = {};
+        keysToExtract.forEach((key) {
+          if (document.data!.containsKey(key)) {
+            filteredData[key] = document.data[key];
+          }
+        });
+        savedData1.add(filteredData);
+      });
+
+      print(savedData1);
+      Future<List<TaskModel>> getTasks() async {
+        final documentList = await _databases.listDocuments(
+          databaseId: "66b2fb2c002edaef7e7a",
+          collectionId: "66b34cc7002a051b3cea",
+        );
+
+        try {
+          // Assuming prefs is a SharedPreferences instance
+          final List<String>? savedTasks =
+              prefs!.getStringList(Constants.taskKey);
+          List<Map<String, dynamic>> savedData1 = [];
+
+          // Define the list of keys you want to extract
+          const keysToExtract = [
+            'id',
+            'title',
+            'description',
+            'completed',
+            'startDateTime',
+            'stopDateTime'
+          ];
+
+          // Iterate through each document and add the filtered map to `savedData1`
+          documentList.documents!.forEach((document) {
+            Map<String, dynamic> filteredData = {};
+            keysToExtract.forEach((key) {
+              if (document.data!.containsKey(key)) {
+                filteredData[key] = document.data![key];
+              }
+            });
+
+            // Add default value for id if it's missing
+            if (!filteredData.containsKey('id')) {
+              filteredData['id'] = 'default-id'; // or generate a unique id
+            }
+
+            savedData1.add(filteredData);
+          });
+
+          print(savedData1);
+          print("res");
+
+          // Convert savedData1 to a list of TaskModel
+          List<TaskModel> tasks = savedData1
+              .map((taskJson) => TaskModel.fromJson(taskJson))
+              .toList();
+          print(tasks);
+
+          // Sort tasks based on their completion status
+          tasks.sort((a, b) {
+            if (a.completed == b.completed) {
+              return 0;
+            } else if (a.completed) {
+              return 1;
+            } else {
+              return -1;
+            }
+          });
+
+          return tasks;
+        } catch (e) {
+          throw Exception(handleException(e));
+        }
+      }
+
+      print("res");
+
+      // if (savedTasks != null) {
+      tasks =
+          savedData1!.map((taskJson) => TaskModel.fromJson(taskJson)).toList();
+      print(tasks);
+      tasks.sort((a, b) {
+        if (a.completed == b.completed) {
+          return 0;
+        } else if (a.completed) {
+          return 1;
+        } else {
+          return -1;
+        }
+      });
+      // }
+      return tasks;
+    } catch (e) {
+      throw Exception(handleException(e));
+    }
   }
   // Future<List<TaskModel>> getTasks() async {
   //   try {

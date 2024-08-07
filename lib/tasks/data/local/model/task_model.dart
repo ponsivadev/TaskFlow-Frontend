@@ -1,5 +1,7 @@
+import 'package:uuid/uuid.dart';
+
 class TaskModel {
-  String id;
+  String id = Uuid().v4();
   String title;
   String description;
   DateTime? startDateTime;

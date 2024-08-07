@@ -4,6 +4,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_manager_app/provider/appwrite_provider.dart';
 import 'package:task_manager_app/tasks/data/local/model/task_model.dart';
 import 'package:task_manager_app/utils/exception_handler.dart';
+import 'package:uuid/uuid.dart';
 
 import '../../../../utils/constants.dart';
 
@@ -11,12 +12,13 @@ class TaskDataProvider {
   final Databases _databases = Databases(Appwrite.instance.client);
 
   List<TaskModel> tasks = [];
+  final Uuid uuid = const Uuid();
   SharedPreferences? prefs;
 
   TaskDataProvider(this.prefs);
   Future<void> createTask(TaskModel taskModel) async {
     try {
-      const documentId = 'unique()'; // Generates a unique ID for the document
+      final documentId = taskModel.id; // Generates a unique ID for the document
       final response = await _databases.createDocument(
         databaseId: "66b2fb2c002edaef7e7a",
         collectionId: "66b34cc7002a051b3cea",
@@ -69,9 +71,9 @@ class TaskDataProvider {
 
         try {
           // Assuming prefs is a SharedPreferences instance
-          final List<String>? savedTasks =
-              prefs!.getStringList(Constants.taskKey);
-          List<Map<String, dynamic>> savedData1 = [];
+          // final List<String>? savedTasks =
+          //     prefs!.getStringList(Constants.taskKey);
+          // List<Map<String, dynamic>> savedData1 = [];
 
           // Define the list of keys you want to extract
           const keysToExtract = [
@@ -223,6 +225,13 @@ class TaskDataProvider {
 
   Future<List<TaskModel>> updateTask(TaskModel taskModel) async {
     try {
+      final documentId = taskModel.id;
+      final response = await _databases.updateDocument(
+        databaseId: "66b2fb2c002edaef7e7a",
+        collectionId: "66b34cc7002a051b3cea",
+        documentId: documentId,
+        data: taskModel.toJson(),
+      );
       tasks[tasks.indexWhere((element) => element.id == taskModel.id)] =
           taskModel;
       tasks.sort((a, b) {
@@ -245,6 +254,12 @@ class TaskDataProvider {
 
   Future<List<TaskModel>> deleteTask(TaskModel taskModel) async {
     try {
+      final documentId = taskModel.id;
+      final response = await _databases.deleteDocument(
+        databaseId: "66b2fb2c002edaef7e7a",
+        collectionId: "66b34cc7002a051b3cea",
+        documentId: documentId,
+      );
       tasks.remove(taskModel);
       final List<String> taskJsonList =
           tasks.map((task) => json.encode(task.toJson())).toList();
